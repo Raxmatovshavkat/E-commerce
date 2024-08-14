@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNotifacationDto } from './dto/create-notifacation.dto';
 import { UpdateNotifacationDto } from './dto/update-notifacation.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Notification } from './entities/notifacation.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class NotifacationService {
+  constructor(@InjectRepository(Notification)
+  private notificationRepository: Repository<Notification>,){}
   create(createNotifacationDto: CreateNotifacationDto) {
     return 'This action adds a new notifacation';
   }
