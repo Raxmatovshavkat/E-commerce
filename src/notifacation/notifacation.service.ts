@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { CreateNotifacationDto } from './dto/create-notifacation.dto';
 import { UpdateNotifacationDto } from './dto/update-notifacation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,25 +7,72 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class NotifacationService {
-  constructor(@InjectRepository(Notification)
-  private notificationRepository: Repository<Notification>,){}
-  create(createNotifacationDto: CreateNotifacationDto) {
-    return 'This action adds a new notifacation';
+  constructor(
+    @InjectRepository(Notification)
+    private readonly notificationRepository: Repository<Notification>,
+  ) { }
+
+  async create(createNotifacationDto: CreateNotifacationDto): Promise<Notification> {
+    try {
+      const notification = this.notificationRepository.create(createNotifacationDto);
+      return await this.notificationRepository.save(notification);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create notification');
+    }
   }
 
-  findAll() {
-    return `This action returns all notifacation`;
+  async findAll(): Promise<Notification[]> {
+    try {
+      const notifications = await this.notificationRepository.find();
+      if (notifications.length === 0) {
+        throw new NotFoundException('No notifications found');
+      }
+      return notifications;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to fetch notifications');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notifacation`;
+  async findOne(id: any): Promise<Notification> {
+    try {
+      const notification = await this.notificationRepository.findOne({ where: { id } });
+      if (!notification) {
+        throw new NotFoundException(`Notification with ID ${id} not found`);
+      }
+      return notification;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to fetch notification');
+    }
   }
 
-  update(id: number, updateNotifacationDto: UpdateNotifacationDto) {
-    return `This action updates a #${id} notifacation`;
+  async update(id: number, updateNotifacationDto: UpdateNotifacationDto): Promise<Notification> {
+    try {
+      await this.notificationRepository.update(id, updateNotifacationDto);
+      const updatedNotification = await this.findOne(id);
+      return updatedNotification;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to update notification');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} notifacation`;
+  async remove(id: number): Promise<any> {
+    try {
+      const notification = await this.findOne(id);
+      await this.notificationRepository.remove(notification);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to remove notification');
+    }
   }
 }

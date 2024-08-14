@@ -36,8 +36,6 @@ export class Product {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     selling_price: number;
 
-    @Column({ type: 'number', precision: 10, scale: 2 })
-    discount_price: number;
 
     @Column()
     best_rated: number;

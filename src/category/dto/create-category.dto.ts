@@ -37,4 +37,5 @@ export class CreateCategoryDto {
     })
     @IsEnum(['inactive', 'active'])
     status: 'inactive' | 'active';
+    
 }

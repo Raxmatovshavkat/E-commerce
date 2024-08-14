@@ -55,11 +55,6 @@ export class CreateProductDto {
     })
     selling_price: number;
 
-    @ApiProperty({
-        description: 'Discounted price of the product',
-        example: 399.99,
-    })
-    discount_price: number;
 
     @ApiProperty({
         description: 'Rating of the product',

@@ -13,27 +13,39 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './config/db';
 import { ConfigModule } from '@nestjs/config';
+import { PaymentModule } from './payment/payment.module';
+import { JwtModule } from '@nestjs/jwt';
+import { MailModule } from './auth/Mail/mail.module';
+import { OtpModule } from './auth/otp/otp.module';
+import { RefreshTokenModule } from './auth/refresh-token/refresh-token.module';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true
+      isGlobal: true
+    }),
+    JwtModule.register({
+      global: true
     }),
     TypeOrmModule.forRoot(databaseConfig()),
-    ReviewModule, 
-    UserModule, 
-    AuthModule, 
-    NotifacationModule, 
-    CategoryModule, 
-    BrandsModule, 
-    WishlistsModule, 
-    ProductsModule, 
-    OrderDetailsModule, 
-    OrdersModule, 
-    DeliveryModule
+    ReviewModule,
+    UserModule,
+    AuthModule,
+    NotifacationModule,
+    CategoryModule,
+    BrandsModule,
+    WishlistsModule,
+    ProductsModule,
+    OrderDetailsModule,
+    OrdersModule,
+    DeliveryModule,
+    PaymentModule,
+    MailModule,
+    OtpModule,
+    RefreshTokenModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

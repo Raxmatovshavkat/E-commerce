@@ -15,12 +15,6 @@ export class Order {
     payment_id: string;
 
     @Column()
-    payment_type: string;
-
-    @Column({ type: 'decimal', precision: 10, scale: 2 })
-    paying_amount: number;
-
-    @Column()
     coupon: string;
 
     @Column()
@@ -28,9 +22,6 @@ export class Order {
 
     @Column()
     subtotal: string;
-
-    @Column()
-    total: number;
 
     @Column({ type: 'enum', enum: ['inactive', 'active'] })
     status: 'inactive' | 'active';

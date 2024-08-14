@@ -15,18 +15,6 @@ export class CreateOrderDto {
     payment_id: string;
 
     @ApiProperty({
-        description: 'The type of payment used for the order',
-        example: 'credit_card',
-    })
-    payment_type: string;
-
-    @ApiProperty({
-        description: 'The amount being paid for the order',
-        example: 99.99,
-    })
-    paying_amount: number;
-
-    @ApiProperty({
         description: 'The coupon code applied to the order, if any',
         example: 'SUMMER2024',
     })

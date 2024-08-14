@@ -1,8 +1,10 @@
+import { Otp } from 'src/auth/otp/entities/otp.entity';
 import { Notification } from '../../notifacation/entities/notifacation.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Review } from 'src/review/entities/review.entity';
 import { Wishlist } from 'src/wishlists/entities/wishlist.entity';
 import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { RefreshToken } from 'src/auth/refresh-token/entities/refresh-token.entity';
 
 @Entity('users')
 export class User {
@@ -38,4 +40,10 @@ export class User {
 
     @OneToMany(() => Order, order => order.user)
     orders: Order[];
+
+    @OneToMany(() => Otp, otp => otp.user)  
+    otps: Otp[];
+
+    @OneToMany(() => RefreshToken, refreshToken => refreshToken.user)
+    refreshTokens: RefreshToken[];
 }
