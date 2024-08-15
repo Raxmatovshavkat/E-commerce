@@ -1,26 +1,26 @@
-# Birinchi qatorda qurish uchun Node tasviridan foydalanamiz
+# Build stage
 FROM --platform=linux/amd64 node:alpine AS builder
 WORKDIR /app
 
-# package.json va pnpm-lock.yaml fayllarini nusxalab olish
+# Copy package files
 COPY package.json pnpm-lock.yaml ./
 
-# Bog'liqliklarni o'rnatamiz
+# Install dependencies
 RUN npm install -g pnpm && pnpm install
 
-# Kodni nusxalab olish va qurish
+# Copy application code and build
 COPY . .
 RUN pnpm run build
 
-# Ishga tushirish uchun asosiy tasvir
+# Runtime stage
 FROM --platform=linux/amd64 node:alpine
 WORKDIR /app
 
-# Qurilgan kodni nusxalab olish
+# Copy built application from the build stage
 COPY --from=builder /app ./
 
-# Portni ochamiz
+# Expose port
 EXPOSE 4000
 
-# Ilovani ishga tushirish komandasi
+# Start the application
 CMD ["pnpm", "run", "start:prod"]
