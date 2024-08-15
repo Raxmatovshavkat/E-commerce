@@ -1,8 +1,11 @@
+            
 
+version: '3'
 services:
   node:
     image: node:alpine
     container_name: e-commerce
+    build: .
     ports:
       - "4000:4000"
     depends_on:
@@ -34,12 +37,8 @@ services:
     networks:
       - backend-net
 
-  os:
-    image: ubuntu
-    container_name: ubuntu-os
-    networks:
-      - backend-net
-
 networks:
   backend-net:
     driver: bridge
+
+
