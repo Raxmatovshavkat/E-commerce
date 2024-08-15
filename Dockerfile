@@ -16,6 +16,9 @@ RUN pnpm run build
 FROM --platform=linux/amd64 node:alpine
 WORKDIR /app
 
+# Install pnpm in the runtime stage
+RUN npm install -g pnpm
+
 # Copy built application from the build stage
 COPY --from=builder /app ./
 

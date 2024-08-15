@@ -1,11 +1,10 @@
-            
-
-version: '3'
+version: '3.8'
 services:
   node:
-    image: node:alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: e-commerce
-    build: .
     ports:
       - "4000:4000"
     depends_on:
@@ -20,7 +19,7 @@ services:
       - backend-net
 
   redis:
-    image: redis
+    image: redis:latest
     container_name: redis-task
     networks:
       - backend-net
@@ -40,5 +39,3 @@ services:
 networks:
   backend-net:
     driver: bridge
-
-
